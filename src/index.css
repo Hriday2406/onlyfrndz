@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@theme {
+  --font-body: "Roboto", "sans-serif";
+  --font-display: "Dancing Script", "cursive";
+  --font-writing: "Oooh Baby", "cursive";
+  --font-mono: "Roboto Mono", "monospace";
+}
