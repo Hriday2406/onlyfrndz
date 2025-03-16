@@ -10,7 +10,7 @@ const Home: React.FC = () => {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   return (
-    <div className="flex h-screen flex-col items-center pt-24">
+    <div className="flex h-screen flex-col items-center pt-36 md:pt-24">
       <BackgroundBeams />
       {/* <Vortex
         backgroundColor="#010101"
