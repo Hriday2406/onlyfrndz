@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "./components/theme-provider";
-import Home from "./pages/Home";
+import Login from "./pages/Login";
+import AdminLogin from "./pages/AdminLogin";
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       </h1>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/admin" element={<AdminLogin />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

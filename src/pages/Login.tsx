@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
-const Home: React.FC = () => {
+const Login: React.FC = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -89,4 +89,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Login;
