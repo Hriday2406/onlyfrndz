@@ -1,3 +1,5 @@
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,70 +23,73 @@ const Login: React.FC = () => {
 
   return (
     <section className="flex h-screen items-center justify-center">
-      <Card className="bg-background mx-5 mt-5 w-[400px]">
-        <CardHeader>
-          <CardTitle className="font-display text-center text-4xl font-bold">
-            {signUp ? "Sign Up" : "Log In"}
-          </CardTitle>
-          <CardDescription className="text-center font-mono">
-            Sign up / Login to access the website
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          {signUp && (
+      <BackgroundBeams />
+      <BackgroundGradient>
+        <Card className="bg-background relative w-[300px] rounded-[20px] sm:w-[400px]">
+          <CardHeader>
+            <CardTitle className="font-display text-center text-4xl font-bold">
+              {signUp ? "Sign Up" : "Log In"}
+            </CardTitle>
+            <CardDescription className="text-center font-mono">
+              Sign up / Login to access the website
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            {signUp && (
+              <Input
+                type="text"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            )}
             <Input
               type="text"
-              placeholder="Full Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
-          )}
-          <Input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          {signUp && (
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          )}
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {signUp && (
+            {signUp && (
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            )}
             <Input
               type="password"
-              placeholder="Confirm Password"
-              className={` ${password === "" ? "" : password !== confirmPassword ? "border-red-500" : "border-green-500"} transition-all duration-500`}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-          )}
-          <Button className="mt-3 cursor-pointer">
-            {signUp ? "Sign Up" : "Log In"}
-          </Button>
-        </CardContent>
-        <CardFooter>
-          <Button
-            variant="link"
-            className="mx-auto cursor-pointer"
-            size="sm"
-            onClick={() => setSignUp(!signUp)}
-          >
-            {signUp
-              ? "Already have an account? Log In"
-              : "Don't have an account? Sign Up"}
-          </Button>
-        </CardFooter>
-      </Card>
+            {signUp && (
+              <Input
+                type="password"
+                placeholder="Confirm Password"
+                className={` ${password === "" ? "" : password !== confirmPassword ? "border-red-500" : "border-green-500"} transition-all duration-500`}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            )}
+            <Button className="mt-3 cursor-pointer">
+              {signUp ? "Sign Up" : "Log In"}
+            </Button>
+          </CardContent>
+          <CardFooter>
+            <Button
+              variant="link"
+              className="mx-auto cursor-pointer"
+              size="sm"
+              onClick={() => setSignUp(!signUp)}
+            >
+              {signUp
+                ? "Already have an account? Log In"
+                : "Don't have an account? Sign Up"}
+            </Button>
+          </CardFooter>
+        </Card>
+      </BackgroundGradient>
     </section>
   );
 };
