@@ -32,8 +32,8 @@ const CustomCard: React.FC<{
         </CardTitle>
         <CardDescription className="text-center font-mono">
           {isMember
-            ? "Enter the membership password to become a member of this blog."
-            : "You can now access the membership features of this blog."}
+            ? "You can now access the membership features of this blog."
+            : "Enter the membership password to become a member of this blog."}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">

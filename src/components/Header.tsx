@@ -13,12 +13,12 @@ export const Header = () => {
   }, [location.pathname]);
 
   return (
-    <header className="absolute top-0 z-50 w-screen">
+    <header className="absolute top-0 z-50 w-full">
       <div
         className={`container mx-auto flex flex-col items-center gap-5 md:flex-row md:gap-0 ${activePath === "/" ? "justify-between" : "justify-center"} py-5`}
       >
         <Link to={"/"} className="font-writing text-4xl">
-          FrndzOnly
+          OnlyFrndz
         </Link>
         {activePath === "/" && (
           <div className="flex items-center justify-between gap-20 md:w-1/2">

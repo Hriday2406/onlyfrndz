@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
 
 const Login: React.FC = () => {
-  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,20 +53,12 @@ const Login: React.FC = () => {
               onChange={(e) => setUsername(e.target.value)}
             />
             {signUp && (
-              <>
-                <Input
-                  type="text"
-                  placeholder="Full Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </>
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             )}
             <Input
               type="password"
