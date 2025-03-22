@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Login: React.FC = () => {
   const [name, setName] = useState("");
@@ -20,6 +20,17 @@ const Login: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [signUp, setSignUp] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const checkConfirmPassword = () => {
+    if (password.length < 8 || password !== confirmPassword) return false;
+    return true;
+  };
+
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.focus();
+  }, [signUp]);
 
   return (
     <section className="flex h-screen items-center justify-center">
@@ -35,41 +46,44 @@ const Login: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            {signUp && (
-              <Input
-                type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            )}
             <Input
               type="text"
               placeholder="Username"
+              ref={inputRef}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             {signUp && (
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <>
+                <Input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </>
             )}
             <Input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              // onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
             {signUp && (
               <Input
                 type="password"
                 placeholder="Confirm Password"
-                className={` ${password === "" ? "" : password !== confirmPassword ? "border-red-500" : "border-green-500"} transition-all duration-500`}
+                className={` ${password === "" ? "" : checkConfirmPassword() ? "border-green-500" : "border-red-500"} transition-all duration-500`}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                // onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               />
             )}
             <Button className="mt-3 cursor-pointer">
