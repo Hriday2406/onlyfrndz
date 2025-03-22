@@ -8,7 +8,7 @@ import Membership from "./pages/Membership";
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <BrowserRouter>
         <Header />
         <Routes>

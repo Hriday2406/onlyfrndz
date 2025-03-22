@@ -13,7 +13,7 @@ import { Delete } from "lucide-react";
 
 const Home: React.FC = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center gap-10 pt-36 md:pt-24">
+    <div className="flex min-h-screen flex-col items-center overflow-hidden pt-36 md:pt-24">
       <BackgroundBeams className="fixed top-0 left-0 h-screen" />
 
       <NewMessage />
