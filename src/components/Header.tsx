@@ -26,9 +26,9 @@ export const Header = () => {
               containerClassName="md:-translate-x-1/2"
               as="button"
               className="dark:bg-background cursor-pointer bg-white font-mono font-bold text-black dark:text-white"
+              onClick={() => navigate("/membership")}
             >
               <span>Membership</span>
-              {/* <Link to="/login">Membership</Link> */}
             </HoverBorderGradient>
             <Button
               variant="outline"

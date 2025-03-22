@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import AdminLogin from "./pages/AdminLogin";
 import { Header } from "./components/Header";
 import Home from "./pages/Home";
+import Membership from "./pages/Membership";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/membership" element={<Membership />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

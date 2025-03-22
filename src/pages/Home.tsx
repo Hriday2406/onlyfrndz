@@ -39,10 +39,10 @@ const Home: React.FC = () => {
             </div>
             <div className="flex flex-col gap-4">
               <CardTitle className="text-center font-mono text-xl font-bold">
-                Create Post
+                CREATE POST
               </CardTitle>
               <Button className="cursor-pointer font-mono text-base font-bold md:h-16">
-                Create
+                CREATE
               </Button>
             </div>
           </CardContent>
