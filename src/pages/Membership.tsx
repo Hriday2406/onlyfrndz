@@ -1,3 +1,4 @@
+import Errors from "@/components/Errors Box";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -16,12 +18,73 @@ const CustomCard: React.FC<{
   isMember: boolean;
   setIsMember: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ isMember, setIsMember }) => {
+  const [membershipPassword, setMembershipPassword] = useState("");
+  const [error, setError] = useState<string[]>([]);
+
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleMembership = async () => {
+    if (membershipPassword === "")
+      return setError(["Please enter the password"]);
+    try {
+      const response = await axios.put(
+        "http://localhost:3000/api/user/membership",
+        {
+          membershipPassword,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("Authorization")}`,
+          },
+        },
+      );
+      if (response.data.status === 200) {
+        setMembershipPassword("");
+        setError([]);
+        setIsMember(true);
+      } else {
+        setError([]);
+        if (response.data.errors) {
+          let errorsArr: string[] = [];
+          response.data.errors.forEach((error: any) =>
+            errorsArr.push(error.msg),
+          );
+          setError((prevErrors) => [...prevErrors, ...errorsArr]);
+          setMembershipPassword("");
+          if (inputRef.current) inputRef.current.focus();
+        } else {
+          setError([response.data.message]);
+          setMembershipPassword("");
+          if (inputRef.current) inputRef.current.focus();
+        }
+      }
+    } catch (error: any) {
+      setError([error]);
+      setMembershipPassword("");
+      if (inputRef.current) inputRef.current.focus();
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
+    const fetchMembershipStatus = async () => {
+      const response = await axios.get(
+        "http://localhost:3000/api/user/membership",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("Authorization")}`,
+          },
+        },
+      );
+      if (response.data.status === 200) {
+        setIsMember(response.data.membershipStatus);
+      }
+    };
+    fetchMembershipStatus();
   }, []);
 
   return (
@@ -37,24 +100,22 @@ const CustomCard: React.FC<{
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
+        {error.length != 0 && <Errors errors={error} />}
+
         {!isMember && (
           <Input
             type="password"
             placeholder="Shhhhhhhhh"
             ref={inputRef}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) =>
-              e.key === "Enter" && password === "buriburi" && setIsMember(true)
-            }
+            value={membershipPassword}
+            onChange={(e) => setMembershipPassword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleMembership()}
           />
         )}
         <Button
           className="mt-3 cursor-pointer"
           onClick={() => {
-            if (isMember) navigate("/");
-            if (password === "buriburi") setIsMember(true);
-            else setIsMember(false);
+            isMember ? navigate("/") : handleMembership();
           }}
         >
           {isMember ? "Go to Homepage" : "Become a member"}
