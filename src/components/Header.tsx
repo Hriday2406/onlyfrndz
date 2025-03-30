@@ -22,17 +22,21 @@ export const Header = () => {
           OnlyFrndz
         </Link>
         {activePath === "/" && (
-          <div className="flex items-center justify-between gap-5 md:w-1/2 md:gap-20">
-            <HoverBorderGradient
-              containerClassName="md:-translate-x-1/2"
-              as="button"
-              className="dark:bg-background cursor-pointer bg-white font-mono font-bold text-black dark:text-white"
-              onClick={() => navigate("/membership")}
-            >
-              <span>Membership</span>
-            </HoverBorderGradient>
+          <div
+            className={`flex items-center ${localStorage.getItem("Authorization") ? "justify-between" : "justify-end"} gap-5 md:w-1/2 md:gap-20`}
+          >
+            {localStorage.getItem("Authorization") && (
+              <HoverBorderGradient
+                containerClassName="md:-translate-x-1/2"
+                as="button"
+                className="dark:bg-background cursor-pointer bg-white font-mono font-bold text-black dark:text-white"
+                onClick={() => navigate("/membership")}
+              >
+                <span>Membership</span>
+              </HoverBorderGradient>
+            )}
 
-            <div className="flex gap-5">
+            <div className="flex gap-5 self-end">
               <ModeToggle />
               <Button
                 variant="outline"
