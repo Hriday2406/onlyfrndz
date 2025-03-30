@@ -37,9 +37,14 @@ export const Header = () => {
               <Button
                 variant="outline"
                 className="dark:bg-background cursor-pointer rounded-full border-2 bg-white py-5 text-base text-black dark:text-white"
-                onClick={() => navigate("/login")}
+                onClick={() => {
+                  localStorage.removeItem("Authorization");
+                  navigate(
+                    localStorage.getItem("Authorization") ? "/" : "/login",
+                  );
+                }}
               >
-                Logout
+                {localStorage.getItem("Authorization") ? "Logout" : "Login"}
               </Button>
             </div>
           </div>
