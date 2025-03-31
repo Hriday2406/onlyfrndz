@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [deleteFlag, setDeleteFlag] = useState(false);
+  const [flag, setFlag] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,14 +42,14 @@ const Home: React.FC = () => {
       }
     }
     fetchMessages();
-  }, [deleteFlag]);
+  }, [flag]);
 
   return (
     <div className="flex min-h-screen flex-col items-center overflow-hidden px-5 pt-36 md:pt-24">
       <BackgroundBeams className="fixed top-0 left-0 -z-10 h-screen" />
 
       {localStorage.getItem("Authorization") ? (
-        <NewMessage />
+        <NewMessage setFlag={setFlag} />
       ) : (
         <BackgroundGradient>
           <Card className="relative rounded-[20px] p-5 md:w-[750px]">
@@ -86,7 +86,7 @@ const Home: React.FC = () => {
                     },
                   );
                   if (response.data.status === 200) {
-                    setDeleteFlag(!deleteFlag);
+                    setFlag(!flag);
                   }
                 } catch (error) {
                   console.error(
