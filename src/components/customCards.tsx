@@ -9,16 +9,19 @@ import {
 import { GlowingEffect } from "./ui/glowing-effect";
 import { Skeleton } from "./ui/skeleton";
 
+export interface MessageType {
+  id: number;
+  user_id: number;
+  title: string;
+  message: string;
+  created_at: string;
+  username: string;
+  can_delete: boolean;
+}
+
 const CustomCard: React.FC<{
-  item: {
-    id: number;
-    user_id: number;
-    title: string;
-    message: string;
-    created_at: string;
-    username: string;
-    can_delete: boolean;
-  };
+  item: MessageType;
+  handleDelete: () => void;
 }> = (props) => {
   return (
     <Card className="relative mt-20 rounded-[20px] border bg-white/0 p-5 font-bold md:w-[750px] md:backdrop-blur-xs dark:font-medium">
@@ -46,7 +49,10 @@ const CustomCard: React.FC<{
           <span>{props.item.created_at}</span>
         </div>
         {props.item.can_delete && (
-          <Delete className="ease size-6 cursor-pointer text-red-500 transition-all duration-300 hover:scale-125" />
+          <Delete
+            className="ease size-6 cursor-pointer text-red-500 transition-all duration-300 hover:scale-125"
+            onClick={props.handleDelete}
+          />
         )}
       </CardFooter>
     </Card>

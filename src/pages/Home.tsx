@@ -1,4 +1,9 @@
-import { CustomCard, DummyCard, WarningCard } from "@/components/customCards";
+import {
+  CustomCard,
+  DummyCard,
+  MessageType,
+  WarningCard,
+} from "@/components/customCards";
 import NewMessage from "@/components/NewMessage";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
@@ -12,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [deleteFlag, setDeleteFlag] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,7 +42,7 @@ const Home: React.FC = () => {
       }
     }
     fetchMessages();
-  }, []);
+  }, [deleteFlag]);
 
   return (
     <div className="flex min-h-screen flex-col items-center overflow-hidden px-5 pt-36 md:pt-24">
@@ -64,8 +70,31 @@ const Home: React.FC = () => {
 
       <TracingBeam className="mb-20">
         <div className="relative mx-auto my-10 w-2/3 antialiased md:w-[750px]">
-          {messages.map((message, index) => (
-            <CustomCard key={index} item={message} />
+          {messages.map((message: MessageType, index) => (
+            <CustomCard
+              key={index}
+              item={message}
+              handleDelete={async () => {
+                try {
+                  const response = await axios.delete(
+                    `http://localhost:3000/api/message/${message.id}`,
+                    {
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `${localStorage.getItem("Authorization")}`,
+                      },
+                    },
+                  );
+                  if (response.data.status === 200) {
+                    setDeleteFlag(!deleteFlag);
+                  }
+                } catch (error) {
+                  console.error(
+                    `Error deleting message with id ${message.id}:`,
+                  );
+                }
+              }}
+            />
           ))}
           {loading && (
             <>
