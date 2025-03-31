@@ -38,7 +38,7 @@ const NewMessage: React.FC<{
   }
 
   return (
-    <BackgroundGradient>
+    <BackgroundGradient containerClassName="w-full sm:w-fit">
       <Card className="relative rounded-[20px] p-5 md:w-[750px]">
         <CardContent className="flex flex-col gap-4 px-0 md:flex-row">
           <div className="flex w-full flex-col gap-5">

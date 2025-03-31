@@ -9,7 +9,6 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { TracingBeam } from "@/components/ui/tracing-beam";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +50,7 @@ const Home: React.FC = () => {
       {localStorage.getItem("Authorization") ? (
         <NewMessage setFlag={setFlag} />
       ) : (
-        <BackgroundGradient>
+        <BackgroundGradient containerClassName="w-full sm:w-fit">
           <Card className="relative rounded-[20px] p-5 md:w-[750px]">
             <CardContent className="flex flex-col gap-5 px-2">
               <CardTitle className="text-center font-mono sm:text-base">
@@ -68,45 +67,41 @@ const Home: React.FC = () => {
         </BackgroundGradient>
       )}
 
-      <TracingBeam className="mb-20">
-        <div className="relative mx-auto my-10 w-2/3 antialiased md:w-[750px]">
-          {messages.map((message: MessageType, index) => (
-            <CustomCard
-              key={index}
-              item={message}
-              handleDelete={async () => {
-                try {
-                  const response = await axios.delete(
-                    `http://localhost:3000/api/message/${message.id}`,
-                    {
-                      headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `${localStorage.getItem("Authorization")}`,
-                      },
+      <div className="relative mx-auto my-10 w-full antialiased md:w-[750px]">
+        {messages.map((message: MessageType, index) => (
+          <CustomCard
+            key={index}
+            item={message}
+            handleDelete={async () => {
+              try {
+                const response = await axios.delete(
+                  `http://localhost:3000/api/message/${message.id}`,
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `${localStorage.getItem("Authorization")}`,
                     },
-                  );
-                  if (response.data.status === 200) {
-                    setFlag(!flag);
-                  }
-                } catch (error) {
-                  console.error(
-                    `Error deleting message with id ${message.id}:`,
-                  );
+                  },
+                );
+                if (response.data.status === 200) {
+                  setFlag(!flag);
                 }
-              }}
-            />
-          ))}
-          {loading && (
-            <>
-              <WarningCard />
-              <DummyCard />
-              <DummyCard />
-              <DummyCard />
-              <DummyCard />
-            </>
-          )}
-        </div>
-      </TracingBeam>
+              } catch (error) {
+                console.error(`Error deleting message with id ${message.id}:`);
+              }
+            }}
+          />
+        ))}
+        {loading && (
+          <>
+            <WarningCard />
+            <DummyCard />
+            <DummyCard />
+            <DummyCard />
+            <DummyCard />
+          </>
+        )}
+      </div>
     </div>
   );
 };

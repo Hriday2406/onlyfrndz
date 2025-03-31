@@ -33,111 +33,99 @@ const Login: React.FC = () => {
     return true;
   };
 
-  const handleSubmit = async () => {
-    if (username === "" || password === "")
+  async function handleLogin() {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/login",
+        {
+          username,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      if (response.data.status === 200) {
+        localStorage.setItem("Authorization", `Bearer ${response.data.token}`);
+        setUsername("");
+        setPassword("");
+        setError([]);
+        navigate("/");
+      } else {
+        setError([]);
+        if (response.data.errors) {
+          let errorsArr: string[] = [];
+          response.data.errors.forEach((error: any) =>
+            errorsArr.push(error.msg),
+          );
+          setError((prevErrors) => [...prevErrors, ...errorsArr]);
+        } else setError([response.data.message]);
+        if (inputRef.current) inputRef.current.focus();
+      }
+    } catch (error: any) {
+      setError([error]);
+      setUsername("");
+      if (inputRef.current) inputRef.current.focus();
+      console.log(error);
+    }
+    setPassword("");
+  }
+
+  async function handleSingup() {
+    if (fullName === "" || email === "" || confirmPassword === "")
       return setError(["Please enter all the details"]);
-    if (signUp) {
-      if (fullName === "" || email === "")
-        return setError(["Please enter all the details"]);
-      try {
-        const response = await axios.post(
-          "http://localhost:3000/api/auth/signup",
-          {
-            fullName,
-            username,
-            email,
-            password,
-            confirmPassword,
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/signup",
+        {
+          fullName,
+          username,
+          email,
+          password,
+          confirmPassword,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          },
-        );
-        if (response.data.status === 200) {
-          setFullName("");
-          setUsername("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          setError([response.data.message]);
-          setSignUp(false);
-        } else {
-          setError([]);
-          if (response.data.errors) {
-            let errorsArr: string[] = [];
-            response.data.errors.forEach((error: { msg: string }) =>
-              errorsArr.push(error.msg),
-            );
-            setError((prevErrors) => [...prevErrors, ...errorsArr]);
-            setPassword("");
-            setConfirmPassword("");
-            if (inputRef.current) inputRef.current.focus();
-          } else {
-            setError([response.data.message]);
-            setPassword("");
-            setConfirmPassword("");
-            if (inputRef.current) inputRef.current.focus();
-          }
-        }
-      } catch (error: any) {
-        setError([error]);
+        },
+      );
+      if (response.data.status === 200) {
         setFullName("");
         setUsername("");
         setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-        if (inputRef.current) inputRef.current.focus();
-        console.log(error);
-      }
-    } else {
-      try {
-        const response = await axios.post(
-          "http://localhost:3000/api/auth/login",
-          {
-            username,
-            password,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          },
-        );
-        if (response.data.status === 200) {
-          localStorage.setItem(
-            "Authorization",
-            `Bearer ${response.data.token}`,
+        setError([response.data.message]);
+        setSignUp(false);
+      } else {
+        setError([]);
+        if (response.data.errors) {
+          let errorsArr: string[] = [];
+          response.data.errors.forEach((error: { msg: string }) =>
+            errorsArr.push(error.msg),
           );
-          setUsername("");
-          setPassword("");
-          setError([]);
-          navigate("/");
-        } else {
-          setError([]);
-          if (response.data.errors) {
-            let errorsArr: string[] = [];
-            response.data.errors.forEach((error: any) =>
-              errorsArr.push(error.msg),
-            );
-            setError((prevErrors) => [...prevErrors, ...errorsArr]);
-            setPassword("");
-            if (inputRef.current) inputRef.current.focus();
-          } else {
-            setError([response.data.message]);
-            setPassword("");
-            if (inputRef.current) inputRef.current.focus();
-          }
-        }
-      } catch (error: any) {
-        setError([error]);
-        setUsername("");
-        setPassword("");
+          setError((prevErrors) => [...prevErrors, ...errorsArr]);
+        } else setError([response.data.message]);
         if (inputRef.current) inputRef.current.focus();
-        console.log(error);
       }
+    } catch (error: any) {
+      setError([error]);
+      setFullName("");
+      setUsername("");
+      setEmail("");
+      if (inputRef.current) inputRef.current.focus();
+      console.log(error);
     }
+    setPassword("");
+    setConfirmPassword("");
+  }
+
+  const handleSubmit = () => {
+    if (username === "" || password === "")
+      return setError(["Please enter all the details"]);
+    if (signUp) handleSingup();
+    else handleLogin();
   };
 
   useEffect(() => {

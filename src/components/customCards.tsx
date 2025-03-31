@@ -24,7 +24,7 @@ const CustomCard: React.FC<{
   handleDelete: () => void;
 }> = (props) => {
   return (
-    <Card className="relative mt-20 rounded-[20px] border bg-white/0 p-5 font-bold md:w-[750px] md:backdrop-blur-xs dark:font-medium">
+    <Card className="relative mt-20 rounded-[20px] border bg-white/0 p-5 leading-4 font-bold md:w-[750px] md:backdrop-blur-xs dark:font-medium">
       <GlowingEffect
         blur={1}
         borderWidth={3}
