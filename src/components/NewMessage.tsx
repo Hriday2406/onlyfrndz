@@ -38,28 +38,28 @@ const NewMessage: React.FC<{
   }
 
   return (
-    <BackgroundGradient containerClassName="w-full sm:w-fit">
+    <BackgroundGradient containerClassName="w-full sm:w-2/3 md:w-fit">
       <Card className="relative rounded-[20px] p-5 md:w-[750px]">
-        <CardContent className="flex flex-col gap-4 px-0 md:flex-row">
-          <div className="flex w-full flex-col gap-5">
+        <CardContent className="flex flex-col gap-5 px-0">
+          <div className="flex flex-col-reverse items-center gap-5 md:grid md:grid-cols-[1fr_140px]">
             <Input
               type="text"
               placeholder="Title of the post"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
+            <CardTitle className="text-center font-mono text-xl font-bold select-none">
+              CREATE POST
+            </CardTitle>
+          </div>
+          <div className="grid items-center gap-5 md:grid-cols-[1fr_140px]">
             <Textarea
               placeholder="Type your message here."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-          </div>
-          <div className="flex flex-col gap-4">
-            <CardTitle className="text-center font-mono text-xl font-bold">
-              CREATE POST
-            </CardTitle>
             <Button
-              className="cursor-pointer font-mono text-base font-bold md:h-16"
+              className="h-12 cursor-pointer font-mono text-xl font-bold md:h-full"
               onClick={handleCreate}
             >
               CREATE
