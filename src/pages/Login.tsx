@@ -22,7 +22,8 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [signUp, setSignUp] = useState(false);
+  // 0 -> login, 1 -> signup, 2 -> forgot
+  const [signUp, setSignUp] = useState(0);
   const [error, setError] = useState<string[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -73,6 +74,56 @@ const Login: React.FC = () => {
     setPassword("");
   }
 
+  async function handleForgotPassword() {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/forgot",
+        {
+          fullName,
+          username,
+          email,
+          password,
+          confirmPassword,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      if (response.data.status === 200) {
+        setFullName("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setError([response.data.message]);
+        setSignUp(0);
+      } else {
+        setError([]);
+        if (response.data.errors) {
+          let errorsArr: string[] = [];
+          response.data.errors.forEach((error: any) =>
+            errorsArr.push(error.msg),
+          );
+          setError((prevErrors) => [...prevErrors, ...errorsArr]);
+          setPassword("");
+          setConfirmPassword("");
+        } else setError([response.data.message]);
+        if (inputRef.current) inputRef.current.focus();
+      }
+    } catch (error: any) {
+      setError([error]);
+      setFullName("");
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      if (inputRef.current) inputRef.current.focus();
+      console.log(error);
+    }
+  }
+
   async function handleSingup() {
     if (fullName === "" || email === "" || confirmPassword === "")
       return setError(["Please enter all the details"]);
@@ -97,7 +148,7 @@ const Login: React.FC = () => {
         setUsername("");
         setEmail("");
         setError([response.data.message]);
-        setSignUp(false);
+        setSignUp(0);
       } else {
         setError([]);
         if (response.data.errors) {
@@ -124,8 +175,9 @@ const Login: React.FC = () => {
   const handleSubmit = () => {
     if (username === "" || password === "")
       return setError(["Please enter all the details"]);
-    if (signUp) handleSingup();
-    else handleLogin();
+    if (signUp === 1) handleSingup();
+    else if (signUp === 0) handleLogin();
+    else handleForgotPassword();
   };
 
   useEffect(() => {
@@ -139,10 +191,16 @@ const Login: React.FC = () => {
         <Card className="bg-background relative w-[300px] rounded-[20px] sm:w-[400px]">
           <CardHeader>
             <CardTitle className="font-display text-center text-4xl font-bold">
-              {signUp ? "Sign Up" : "Log In"}
+              {signUp === 1
+                ? "Sign Up"
+                : signUp === 2
+                  ? "Forgot Password"
+                  : "Log In"}
             </CardTitle>
             <CardDescription className="text-center font-mono">
-              Sign up / Login to access the website
+              {signUp === 2
+                ? "Enter your Name along with Email ID to reset your password"
+                : "Sign up / Login to access the website"}
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
@@ -155,11 +213,11 @@ const Login: React.FC = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            {signUp && (
+            {!!signUp && (
               <>
                 <Input
                   type="text"
-                  placeholder="Fullname"
+                  placeholder="Full Name"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                 />
@@ -174,15 +232,17 @@ const Login: React.FC = () => {
 
             <Input
               type="password"
-              placeholder="Password"
+              placeholder={signUp === 2 ? "New Password" : "Password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
-            {signUp && (
+            {!!signUp && (
               <Input
                 type="password"
-                placeholder="Confirm Password"
+                placeholder={
+                  signUp === 2 ? "Confirm New Password" : "Confirm Password"
+                }
                 className={` ${password === "" ? "" : checkConfirmPassword() ? "border-green-500" : "border-red-500"} transition-all duration-500`}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -190,19 +250,40 @@ const Login: React.FC = () => {
               />
             )}
             <Button className="mt-3 cursor-pointer" onClick={handleSubmit}>
-              {signUp ? "Sign Up" : "Log In"}
+              {signUp === 1
+                ? "Sign Up"
+                : signUp === 2
+                  ? "Forgot Password"
+                  : "Log In"}
             </Button>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-2">
+            {!signUp && (
+              <Button
+                variant="link"
+                className="mx-auto w-full cursor-pointer"
+                size="sm"
+                onClick={() => setSignUp(2)}
+              >
+                Forgot Password?
+              </Button>
+            )}
             <Button
               variant="link"
-              className="mx-auto cursor-pointer"
+              className="mx-auto w-full cursor-pointer"
               size="sm"
-              onClick={() => setSignUp(!signUp)}
+              onClick={() =>
+                setSignUp((prev) => {
+                  if (prev === 0) return 1;
+                  else return 0;
+                })
+              }
             >
-              {signUp
-                ? "Already have an account? Log In"
-                : "Don't have an account? Sign Up"}
+              {signUp === 0
+                ? "Don't have an account? Sign Up"
+                : signUp === 2
+                  ? "Still remember your password? Log In"
+                  : "Already have an account? Log In"}
             </Button>
           </CardFooter>
         </Card>
