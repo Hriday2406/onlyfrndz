@@ -29,7 +29,7 @@ const CustomCard: React.FC<{
       return setError(["Please enter the password"]);
     try {
       const response = await axios.put(
-        "http://localhost:3000/api/user/membership",
+        "https://onlyfrndz-backend.onrender.com/api/user/membership",
         {
           membershipPassword,
         },
@@ -72,7 +72,7 @@ const CustomCard: React.FC<{
     if (inputRef.current) inputRef.current.focus();
     const fetchMembershipStatus = async () => {
       const response = await axios.get(
-        "http://localhost:3000/api/user/membership",
+        "https://onlyfrndz-backend.onrender.com/api/user/membership",
         {
           headers: {
             "Content-Type": "application/json",

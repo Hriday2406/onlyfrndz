@@ -24,7 +24,7 @@ const Home: React.FC = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "http://localhost:3000/api/message/all",
+          "https://onlyfrndz-backend.onrender.com/api/message/all",
           {
             headers: {
               "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const Home: React.FC = () => {
             handleDelete={async () => {
               try {
                 const response = await axios.delete(
-                  `http://localhost:3000/api/message/${message.id}`,
+                  `https://onlyfrndz-backend.onrender.com/api/message/${message.id}`,
                   {
                     headers: {
                       "Content-Type": "application/json",

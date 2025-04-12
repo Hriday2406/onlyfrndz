@@ -37,7 +37,7 @@ const Login: React.FC = () => {
   async function handleLogin() {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "https://onlyfrndz-backend.onrender.com/api/auth/login",
         {
           username,
           password,
@@ -77,7 +77,7 @@ const Login: React.FC = () => {
   async function handleForgotPassword() {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/forgot",
+        "https://onlyfrndz-backend.onrender.com/api/auth/forgot",
         {
           fullName,
           username,
@@ -129,7 +129,7 @@ const Login: React.FC = () => {
       return setError(["Please enter all the details"]);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        "https://onlyfrndz-backend.onrender.com/api/auth/signup",
         {
           fullName,
           username,

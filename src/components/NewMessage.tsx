@@ -15,7 +15,7 @@ const NewMessage: React.FC<{
   async function handleCreate() {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/message/",
+        "https://onlyfrndz-backend.onrender.com/api/message/",
         {
           title,
           message,
